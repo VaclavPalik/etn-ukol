@@ -14,6 +14,7 @@
 <div class="container">
 	<p>Welcome!<p>
 			<a class="btn btn-primary btn-lg" href="/etnshop/product/list" role="button">Products</a>
+			<a class="btn btn-primary btn-lg" href="/etnshop/product/search" role="button">Search</a>
 		</p>
 </div>
 

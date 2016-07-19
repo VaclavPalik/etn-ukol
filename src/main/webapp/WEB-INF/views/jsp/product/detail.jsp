@@ -17,6 +17,7 @@
 		Id: ${product.id}<br>
 		Name: ${product.name}<br>
 		Serial Number: ${product.serialNumber}<br>
+	<a class="btn btn-primary btn-lg" href="/etnshop/product/edit/${product.id}" role="button">Edit</a>
 	<hr>
 	<footer>
 		<p>&copy; Etnetera a.s. 2015</p>

@@ -25,13 +25,14 @@
 		<tbody>
 			<c:forEach items="${products}" var="product">
 				<tr>
-					<td>${product.id}</td>
+					<td><a href="/etnshop/product/detail/${product.id}">${product.id}</a></td>
 					<td>${product.name}</td>
 					<td>${product.serialNumber}</td>
 				</tr>	
 			</c:forEach>
 		</tbody>
 	</table>
+	<a class="btn btn-primary btn-lg" href="/etnshop/product/add" role="button">Add new product</a>
 	<hr>
 	<footer>
 		<p>&copy; Etnetera a.s. 2015</p>
