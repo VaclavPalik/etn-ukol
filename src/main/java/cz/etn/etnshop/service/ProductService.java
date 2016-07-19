@@ -13,6 +13,9 @@ public interface ProductService {
     
 	@Transactional(readOnly = true)
 	List<Product> getProducts();
+	
+	@Transactional(readOnly = true)
+	Product getProduct(int id);
 
 	@Transactional(readOnly = false)
     void deleteProduct(int productId);

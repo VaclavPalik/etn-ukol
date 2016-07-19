@@ -24,6 +24,12 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getProducts() {
 		return productDao.getProducts();
 	}
+	
+
+	@Override
+	public Product getProduct(int id) {
+		return productDao.getProduct(id);
+	}
 
 	@Override
 	public void deleteProduct(int productId) {
@@ -35,5 +41,6 @@ public class ProductServiceImpl implements ProductService {
 	public void updateProduct(Product product) {
 		productDao.updateProduct(product);
 	}
+
 
 }

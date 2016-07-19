@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 @Repository("productDao")
@@ -34,6 +35,14 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		getSession().update(product);
 		
 	}
+
+	@Override
+	public Product getProduct(int id) {
+		Criteria criteria = getSession().createCriteria(Product.class);
+		criteria.add(Restrictions.eq("id", id));
+		return (Product) criteria.uniqueResult();
+	}
+	
 	
 
 }
