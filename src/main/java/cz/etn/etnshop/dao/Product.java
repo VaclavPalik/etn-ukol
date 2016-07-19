@@ -9,7 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 @Entity
+@Indexed
 @Table(name="product")
 public class Product implements Serializable {
 	
@@ -31,6 +38,7 @@ public class Product implements Serializable {
 	}
 
     @Column(name = "name", nullable = false)
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	public String getName() {
 		return name;
 	}
@@ -40,6 +48,7 @@ public class Product implements Serializable {
 	}
 	
 	@Column(name = "serialNumber", nullable = false)
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	public String getSerialNumber(){
 		return serialNumber;
 	}

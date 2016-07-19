@@ -13,6 +13,9 @@ public interface ProductDao {
 	List<Product> getProducts();
 	
 	@Transactional(readOnly = true)
+	List<Product> findProducts(String query);
+	
+	@Transactional(readOnly = true)
 	Product getProduct(int productId);
 
 	@Transactional(readOnly = false)

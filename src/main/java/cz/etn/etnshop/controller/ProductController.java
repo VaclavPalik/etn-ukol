@@ -1,11 +1,14 @@
 package cz.etn.etnshop.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import cz.etn.etnshop.dao.Product;
@@ -51,4 +54,41 @@ public class ProductController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
+	public ModelAndView editForm(@PathVariable int id){
+		ModelAndView modelAndView = new ModelAndView("product/editForm");
+		modelAndView.addObject("product", productService.getProduct(id));
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
+	public ModelAndView editSubmit(@PathVariable int id, @ModelAttribute Product newData){
+		ModelAndView modelAndView = new ModelAndView("product/detail");
+		Product product = productService.getProduct(id);
+		product.setName(newData.getName());
+		product.setSerialNumber(newData.getSerialNumber());
+		productService.updateProduct(product);
+		modelAndView.addObject("product", product);
+		return modelAndView;
+	}
+	
+	@RequestMapping("/search")
+	public ModelAndView search(){
+		return new ModelAndView("product/searchForm");
+	}
+	
+	@RequestMapping(value="/search", params={"query"})
+	public ModelAndView search(@RequestParam("query") String query){
+		ModelAndView modelAndView;
+		if(query==null||"".equals(query)){
+			modelAndView = new ModelAndView("product/searchForm");
+		}else{
+			modelAndView = new ModelAndView("product/list");
+			modelAndView.addObject("test", "mytest");
+			List<Product> products = productService.findProducts(query);
+			modelAndView.addObject("count", products.size());
+			modelAndView.addObject("products", products);
+		}
+		return modelAndView;
+	}
 }

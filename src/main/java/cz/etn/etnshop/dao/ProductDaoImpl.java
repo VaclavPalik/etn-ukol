@@ -4,11 +4,16 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 @Repository("productDao")
 public class ProductDaoImpl extends AbstractDao implements ProductDao {
+	private volatile boolean isIndexBuilt=false;
 
 	@Override
 	public void saveProduct(Product product) {
@@ -42,7 +47,34 @@ public class ProductDaoImpl extends AbstractDao implements ProductDao {
 		criteria.add(Restrictions.eq("id", id));
 		return (Product) criteria.uniqueResult();
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> findProducts(String query) {
+		if(!isIndexBuilt){
+			synchronized (this) {
+				if(!isIndexBuilt){
+					indexProducts();
+					isIndexBuilt=true;
+				}
+			}
+		}
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		QueryBuilder qb = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
+		org.apache.lucene.search.Query lQuery = qb.keyword().onFields("name", "serialNumber").matching(query).createQuery();
+		Query dbQuery = fullTextSession.createFullTextQuery(lQuery, Product.class);
+		return dbQuery.list();
+	}
+
+	private void indexProducts() {
+		FullTextSession fullTextSession = Search.getFullTextSession(getSession());
+		try {
+			fullTextSession.createIndexer().startAndWait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 }

@@ -15,6 +15,9 @@ public interface ProductService {
 	List<Product> getProducts();
 	
 	@Transactional(readOnly = true)
+	List<Product> findProducts(String query);
+	
+	@Transactional(readOnly = true)
 	Product getProduct(int id);
 
 	@Transactional(readOnly = false)
